@@ -1,0 +1,12 @@
+<div class="join">
+
+    @for(page of getPagesList(); track page){
+    <button class="join-item btn" [class.btn-primary]="page ===activatePage()" [routerLink]="[]"
+        [queryParams]="{page: page}" (click)="activatePage.set(page)">
+        {{page}}
+    </button>
+    }@empty {
+    <p>No hay paginas</p>
+    }
+
+</div>
