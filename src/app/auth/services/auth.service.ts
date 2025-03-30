@@ -13,15 +13,14 @@ const baseUrl = environment.baseUrl
 export class AuthService {
     private _authStatus = signal<AuthStatus>("checking")
     private _user = signal<User | null>(null)
-    private _token = signal<string | null>(null)
-
+    private _token = signal<string | null>(localStorage.getItem("token"))
+    
 
     private http = inject(HttpClient)
 
 
     checkStatusResource = rxResource({
         loader: () => this.checkStatus(),
-
     })
 
     public authStatus = computed<AuthStatus>(() => {
@@ -38,6 +37,10 @@ export class AuthService {
 
     public token = computed<string | null>(() => {
         return this._token()
+    })
+
+    public isAdmin = computed(() => {
+        return this._user()?.roles.includes("admin") ?? false
     })
 
     public login(email: string, password: string): Observable<boolean> {
